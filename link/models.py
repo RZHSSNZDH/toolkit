@@ -1,3 +1,4 @@
 from django.db import models
 
-# Create your models here.
+class link(models.Model):
+    main_link = models.CharField(max_length=200)
