@@ -1,0 +1,6 @@
+<form action="{% url 'link:create' %}" method="post">
+    {% csrf_token %}
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    <input type=text name=main_link>
+    <input type="submit" value="Ok!">
+</form>
