@@ -1,7 +1,6 @@
 from django.http import HttpResponse
-from django.http.response import HttpResponseRedirect
 from django.shortcuts import redirect, render
-import random
+import random, re
 from . import models
 
 def gen_random_link():
@@ -22,11 +21,14 @@ def index(request):
 
 def create_short(request):
     short = gen_random_link()
-    print(short)
-    main = request.POST["main_link"] # TODO: Add https if there is no
-    L = models.link(short=short, main=main)
-    L.save()
-    return HttpResponse("127.0.0.1:8000/link/" + str(short))
+    main = request.POST["main_link"]
+    url_pattern = "^https?:\\/\\/(?:www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&\\/=]*)$"
+    if re.match(url_pattern, main):
+        L = models.link(short=short, main=main)
+        L.save()
+        return HttpResponse("127.0.0.1:8000/link/" + str(short))
+    else:
+        return HttpResponse("Your link is not valid. Maybe you should add http.")
 
 def go_to_main(request, short):
     main = str(models.link.objects.get(short=short))
