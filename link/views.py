@@ -27,7 +27,7 @@ def create_short(request):
         if re.match(url_pattern, main):
             L = models.link(short=short, main=main)
             L.save()
-            return HttpResponse("127.0.0.1:8000" + reverse("link:index") + str(short))
+            return HttpResponse(request.META["HTTP_HOST"] + reverse("link:index") + str(short))
         else:
             return HttpResponse("Your link is not valid. Maybe you should add http.")
 
