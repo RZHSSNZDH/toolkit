@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, reverse
 import random, re
 from . import models
 
@@ -27,7 +27,7 @@ def create_short(request):
         if re.match(url_pattern, main):
             L = models.link(short=short, main=main)
             L.save()
-            return HttpResponse("127.0.0.1:8000/link/" + str(short))
+            return HttpResponse("127.0.0.1:8000" + reverse("link:index") + str(short))
         else:
             return HttpResponse("Your link is not valid. Maybe you should add http.")
 
